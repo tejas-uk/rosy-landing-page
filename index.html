@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rosy - Your AI Parenting Co-pilot</title>
     <meta name="description" content="AI assistant for expert based parenting guidance, milestone tracking, and more">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192x192.png">
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -226,23 +235,53 @@
             }
         }
 
-        function submitWaitlist() {
+        async function submitWaitlist() {
             const email = document.getElementById('heroEmail').value;
-            if (email && email.includes('@')) {
-                // Here you would typically send the email to your backend
-                alert('Thank you for joining the waitlist! We\'ll be in touch soon.');
-                
-                // Reset the form
-                document.getElementById('heroEmail').value = '';
-                const form = document.getElementById('inlineWaitlistForm');
-                const button = document.getElementById('joinWaitlistBtn');
-                
-                form.classList.remove('active');
-                setTimeout(() => {
-                    button.style.display = 'block';
-                }, 400);
-            } else {
+            
+            if (!email || !email.includes('@')) {
                 alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Disable button during submission
+            const submitBtn = document.querySelector('.join-button');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Joining...';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    alert(data.message);
+                    
+                    // Reset the form
+                    document.getElementById('heroEmail').value = '';
+                    const form = document.getElementById('inlineWaitlistForm');
+                    const button = document.getElementById('joinWaitlistBtn');
+                    
+                    form.classList.remove('active');
+                    setTimeout(() => {
+                        button.style.display = 'block';
+                    }, 400);
+                } else {
+                    alert(data.message || 'Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error submitting email:', error);
+                alert('Network error. Please check your connection and try again.');
+            } finally {
+                // Re-enable button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         }
     </script>

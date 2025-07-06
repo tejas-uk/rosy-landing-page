@@ -523,6 +523,19 @@ h1, h2, h3 {
     transition: all 0.1s ease;
 }
 
+.join-button:disabled {
+    background-color: var(--text-light-grey);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.join-button:disabled:hover {
+    background-color: var(--text-light-grey);
+    transform: none;
+    box-shadow: none;
+}
+
 /* Footer */
 .footer {
     background-color: var(--primary-black);
@@ -707,8 +720,17 @@ h1, h2, h3 {
         gap: 2rem;
     }
     
+    .footer-section {
+        align-items: center;
+    }
+    
     .social-icons {
         justify-content: center;
+    }
+    
+    .share-section {
+        justify-content: center;
+        align-items: center;
     }
     
     .video-placeholder {
