@@ -98,6 +98,7 @@ h1, h2, h3 {
     overflow: hidden;
     text-decoration: none;
     display: inline-block;
+    white-space: nowrap;
 }
 
 
@@ -174,6 +175,7 @@ h1, h2, h3 {
     text-align: center;
     padding: var(--section-padding);
     background: linear-gradient(135deg, var(--background-off-white) 0%, rgba(252, 127, 103, 0.05) 100%);
+    position: relative;
 }
 
 .hero-content {
@@ -368,6 +370,65 @@ h1, h2, h3 {
     margin-top: 2rem;
 }
 
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+    animation: fadeInIndicator 1s ease-out 0.5s forwards;
+}
+
+@keyframes fadeInIndicator {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.scroll-text {
+    font-size: 1rem;
+    color: var(--text-grey);
+    margin: 0;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.scroll-text .arrow {
+    display: inline-block;
+    font-size: 1.125rem;
+    margin-left: 4px;
+    animation: bounceArrow 1.5s ease-in-out infinite;
+}
+
+.scroll-indicator:hover .scroll-text {
+    color: var(--primary-coral);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(252, 127, 103, 0.2);
+}
+
+@keyframes bounceArrow {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(3px);
+    }
+}
+
 /* Footer */
 .footer {
     background-color: var(--primary-black);
@@ -474,10 +535,17 @@ h1, h2, h3 {
     }
     
     .cta-button {
-        width: 100%;
-        max-width: 280px;
         padding: 16px 32px;
         font-size: 1rem;
+    }
+    
+    .scroll-indicator {
+        bottom: 30px;
+    }
+    
+    .scroll-text {
+        font-size: 0.875rem;
+        padding: 10px 20px;
     }
     
     .timeline-content h3 {
@@ -508,5 +576,12 @@ h1, h2, h3 {
     
     .timeline-item {
         margin-bottom: 3rem;
+    }
+}
+
+/* Mobile-specific hero text line breaks */
+@media (max-width: 768px) {
+    .mobile-break {
+        display: block;
     }
 }

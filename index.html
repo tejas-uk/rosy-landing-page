@@ -27,13 +27,17 @@
                 <img src="assets/Logo.png" alt="Rosy AI Logo" class="logo">
                 <h1 class="hero-title">
                     <span class="title-line-1">Meet Rosy!</span>
-                    <span class="title-line-2">Your AI Parenting Co-pilot</span>
+                    <span class="title-line-2">Your AI Parenting <span class="mobile-break">Co-pilot</span></span>
                 </h1>
-                <p class="hero-subtitle">AI assistant for expert based parenting guidance, milestone tracking, and more</p>
+                <p class="hero-subtitle">AI assistant for expert based parenting guidance, milestone tracking, <span class="mobile-break">and more</span></p>
                 <div class="hero-cta-container">
                     <a href="https://rosyai.replit.app" class="cta-button" target="_blank">Go to App</a>
                 </div>
             </div>
+        </div>
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator" onclick="scrollToRoadmap()">
+            <p class="scroll-text">Our Roadmap <span class="arrow">↓</span></p>
         </div>
     </section>
 
@@ -102,6 +106,13 @@
     </footer>
 
     <script>
+        // Smooth scroll to roadmap
+        function scrollToRoadmap() {
+            document.getElementById('roadmap').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
         // Intersection Observer for timeline animations
         document.addEventListener('DOMContentLoaded', function() {
             const observerOptions = {
@@ -120,6 +131,30 @@
             // Observe timeline items
             document.querySelectorAll('.timeline-item').forEach(item => {
                 observer.observe(item);
+            });
+
+            // Auto-hide scroll indicator when user scrolls
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            let hasScrolled = false;
+
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.pageYOffset;
+                const heroHeight = document.getElementById('hero').offsetHeight;
+
+                if (scrollPosition > 100 && !hasScrolled) {
+                    hasScrolled = true;
+                    scrollIndicator.style.animation = 'none';
+                    scrollIndicator.style.opacity = '0';
+                    setTimeout(() => {
+                        scrollIndicator.style.visibility = 'hidden';
+                    }, 500);
+                } else if (scrollPosition <= 100 && hasScrolled) {
+                    hasScrolled = false;
+                    scrollIndicator.style.visibility = 'visible';
+                    setTimeout(() => {
+                        scrollIndicator.style.opacity = '1';
+                    }, 10);
+                }
             });
         });
     </script>
